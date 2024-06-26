@@ -1,0 +1,27 @@
+{
+  "name": "my-awesome-table-component",
+  "version": "1.0.18",
+  "description": "A simple Nuxt 3 table component",
+  "main": "./dist/my-awesome-table-component.umd.js",
+  "module": "./dist/my-awesome-table-component.es.js",
+  "types": "dist/my-awesome-table-component.d.ts",
+  "scripts": {
+    "build": "nuxt build",
+    "build-lib": "vite build --config vite.config.js"
+  },
+  "keywords": [
+    "nuxt",
+    "table",
+    "component"
+  ],
+  "author": "Murat",
+  "license": "MIT",
+  "dependencies": {
+    "nuxt": "^3.12.2",
+    "vue": "^3.4.29",
+    "vue-router": "^4.3.3"
+  },
+  "files": [
+    "dist"
+  ]
+}
