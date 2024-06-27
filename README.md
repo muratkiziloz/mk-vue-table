@@ -28,6 +28,8 @@ Include the component in your project and use it as shown in the example below:
     :sortDescIcon="'sort-desc'"
     :sortDefaultIcon="'sort-default'"
     :action="true"
+    :columnSearch="true"
+    :perPage="5"
   >
     <template #action="{ row }">
       <button @click="handleAction(row)">Action</button>
@@ -118,3 +120,6 @@ If true, adds an action area to the far right of each row. Default is false.
 
 ### columnSearch (Boolean, Optional)
 If true, there is a search field under each column.
+
+### perPage (Number, Required)
+Number of records to show on one page
