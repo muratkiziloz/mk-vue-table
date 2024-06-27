@@ -7,11 +7,15 @@
           {{ header.text }}
           <span :class="getSortIcon(header.value)"></span>
         </th>
+        <th v-if="action">Actions</th>
       </tr>
       </thead>
       <tbody>
       <tr v-for="(row, rowIndex) in sortedRows" :key="rowIndex">
         <td v-for="header in headers" :key="header.value">{{ row[header.value] }}</td>
+        <td v-if="action">
+          <slot name="action" :row="row"></slot>
+        </td>
       </tr>
       </tbody>
     </table>
@@ -49,6 +53,10 @@ const props = defineProps({
   sortDefaultIcon: {
     type: String,
     required: true
+  },
+  action: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -91,8 +99,6 @@ table {
   width: 100%;
   border-collapse: collapse;
   background-color: #f9f9f9;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
 }
 
 th, td {

@@ -2,12 +2,15 @@
   <MyTable
       :headers="headers"
       :rows="rows"
-      headerClass="my-custom-header-class"
-      :headerStyle="{ backgroundColor: '#ecebeb', color: '#333' }"
-      sortAscIcon="sort-asc"
-      sortDescIcon="sort-desc"
-      sortDefaultIcon="icon"
-  />
+      :sortAscIcon="'sort-asc'"
+      :sortDescIcon="'sort-desc'"
+      :sortDefaultIcon="'sort-default'"
+      :action="true"
+  >
+    <template #action="{ row }">
+      <button @click="handleAction(row)">Action</button>
+    </template>
+  </MyTable>
 </template>
 
 <script setup lang="ts">
@@ -31,6 +34,10 @@ const rows = ref([
   { name: 'Jane Smith', age: 25, age2: 'tesf', age4: 'test2'  },
   { name: 'Jane Smith', age: 25, age2: 'tesf', age4: 'test2'  },
 ]);
+
+const handleAction = (row) => {
+  alert(`Action clicked for ${row.name}`);
+};
 </script>
 
 <style scoped></style>
