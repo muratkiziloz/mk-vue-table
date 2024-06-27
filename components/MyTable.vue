@@ -3,16 +3,17 @@
     <table>
       <thead :class="headerClass" :style="headerStyle">
       <tr>
-        <th v-for="header in headers" :key="header.value" @click="sortTable(header.value)">
+        <th v-for="(header, index) in headers" :key="index">
           {{ header.text }}
+          <input v-if="columnSearch" class="search-input" type="text" v-model="searchText[index]" placeholder="ara" @input="handleSearch(header.value, $event.target.value)">
           <span :class="getSortIcon(header.value)"></span>
         </th>
         <th v-if="action">Actions</th>
       </tr>
       </thead>
       <tbody>
-      <tr v-for="(row, rowIndex) in sortedRows" :key="rowIndex">
-        <td v-for="header in headers" :key="header.value">{{ row[header.value] }}</td>
+      <tr v-for="(row, rowIndex) in filteredRows" :key="rowIndex">
+        <td v-for="(header, colIndex) in headers" :key="colIndex">{{ row[header.value] }}</td>
         <td v-if="action">
           <slot name="action" :row="row"></slot>
         </td>
@@ -56,28 +57,35 @@ const props = defineProps({
   },
   action: {
     type: Boolean,
+    required: false,
     default: false
+  },
+  columnSearch: {
+    type: Boolean,
+    required: false,
+    default: true
   }
+});
+
+const searchText = ref(Array(props.headers.length).fill(''));
+
+const filteredRows = computed(() => {
+  return props.rows.filter(row => {
+    return props.headers.every((header, index) => {
+      const searchValue = searchText.value[index].toLowerCase();
+      return String(row[header.value]).toLowerCase().includes(searchValue);
+    });
+  });
 });
 
 const sortKey = ref('');
 const sortOrder = ref(1);
 
-const sortedRows = computed(() => {
-  if (!sortKey.value) {
-    return props.rows;
-  }
-  return [...props.rows].sort((a, b) => {
-    if (a[sortKey.value] < b[sortKey.value]) {
-      return -1 * sortOrder.value;
-    } else if (a[sortKey.value] > b[sortKey.value]) {
-      return 1 * sortOrder.value;
-    }
-    return 0;
-  });
-});
+const handleSearch = (key, value) => {
+  searchText.value[props.headers.findIndex(header => header.value === key)] = value;
+};
 
-const sortTable = (key: string) => {
+const sortTable = (key) => {
   if (sortKey.value === key) {
     sortOrder.value = -sortOrder.value;
   } else {
@@ -86,7 +94,7 @@ const sortTable = (key: string) => {
   }
 };
 
-const getSortIcon = (key: string) => {
+const getSortIcon = (key) => {
   if (sortKey.value === key) {
     return sortOrder.value === 1 ? props.sortAscIcon : props.sortDescIcon;
   }
@@ -110,11 +118,17 @@ th, td {
 th {
   cursor: pointer;
   position: relative;
-  //background-color: #ffffff;
-  //color: #333;
   font-weight: 600;
   text-transform: uppercase;
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+th input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 
 th:hover {
@@ -153,6 +167,7 @@ tbody tr:hover {
   content: '⇅';
   font-size: 0.2em;
 }
-
-
+.search-input {
+  margin-top: 10px;
+}
 </style>

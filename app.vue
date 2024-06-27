@@ -6,6 +6,7 @@
       :sortDescIcon="'sort-desc'"
       :sortDefaultIcon="'sort-default'"
       :action="true"
+      :columnSearch="true"
   >
     <template #action="{ row }">
       <button @click="handleAction(row)">Action</button>
@@ -27,11 +28,11 @@ const rows = ref([
   { name: 'John Doe', age: 30, age2: 'tesf', age4: 'test' },
   { name: 'Jane Smith', age: 25, age2: 'tesf', age4: 'test2'  },
   { name: 'Jane Smith', age: 25, age2: 'tesf', age4: 'test2'  },
+  { name: 'Jane Smith', age: 26, age2: 'tesf', age4: 'test2'  },
+  { name: 'Jane Smith', age: 27, age2: 'tesf', age4: 'test2'  },
+  { name: 'Jane Smith', age: 24, age2: 'tesf', age4: 'test2'  },
   { name: 'Jane Smith', age: 25, age2: 'tesf', age4: 'test2'  },
-  { name: 'Jane Smith', age: 25, age2: 'tesf', age4: 'test2'  },
-  { name: 'Jane Smith', age: 25, age2: 'tesf', age4: 'test2'  },
-  { name: 'Jane Smith', age: 25, age2: 'tesf', age4: 'test2'  },
-  { name: 'Jane Smith', age: 25, age2: 'tesf', age4: 'test2'  },
+  { name: 'Hasan Smith', age: 25, age2: 'tesf', age4: 'test2'  },
   { name: 'Jane Smith', age: 25, age2: 'tesf', age4: 'test2'  },
 ]);
 
