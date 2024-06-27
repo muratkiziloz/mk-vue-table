@@ -3,7 +3,7 @@
     <table>
       <thead :class="headerClass" :style="headerStyle">
       <tr>
-        <th v-for="(header, index) in headers" :key="index">
+        <th v-for="(header, index) in headers" :key="index" @click="sortTable(header.value)">
           {{ header.text }}
           <input v-if="columnSearch" class="search-input" type="text" v-model="searchText[index]" placeholder="ara" @input="handleSearch(header.value, $event.target.value)">
           <span :class="getSortIcon(header.value)"></span>
@@ -13,7 +13,7 @@
       </thead>
 
       <tbody>
-      <tr v-for="(row, rowIndex) in filteredRows" :key="rowIndex">
+      <tr v-for="(row, rowIndex) in paginatedRows" :key="rowIndex">
         <td v-for="(header, colIndex) in headers" :key="colIndex">{{ row[header.value] }}</td>
         <td v-if="action">
           <slot name="action" :row="row"></slot>
@@ -21,11 +21,13 @@
       </tr>
       </tbody>
     </table>
+    <Pagination :currentPage="currentPage" :totalPages="totalPages" :onPageChange="changePage" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
+import Pagination from './Pagination.vue';
 
 const props = defineProps({
   headers: {
@@ -65,13 +67,35 @@ const props = defineProps({
     type: Boolean,
     required: false,
     default: true
+  },
+  perPage: {
+    type: Number,
+    default: 10
   }
 });
 
+const currentPage = ref(1);
+const sortKey = ref('');
+const sortOrder = ref(1);
 const searchText = ref(Array(props.headers.length).fill(''));
 
+// Sıralama işlemi
+const sortedRows = computed(() => {
+  if (!sortKey.value) return props.rows;
+
+  return [...props.rows].sort((a, b) => {
+    const aValue = a[sortKey.value];
+    const bValue = b[sortKey.value];
+
+    if (aValue < bValue) return sortOrder.value * -1;
+    if (aValue > bValue) return sortOrder.value;
+    return 0;
+  });
+});
+
+// Filtreleme işlemi
 const filteredRows = computed(() => {
-  return props.rows.filter(row => {
+  return sortedRows.value.filter(row => {
     return props.headers.every((header, index) => {
       const searchValue = searchText.value[index].toLowerCase();
       return String(row[header.value]).toLowerCase().includes(searchValue);
@@ -79,13 +103,29 @@ const filteredRows = computed(() => {
   });
 });
 
-const sortKey = ref('');
-const sortOrder = ref(1);
+// Sayfalama işlemi
+const paginatedRows = computed(() => {
+  const startIndex = (currentPage.value - 1) * props.perPage;
+  const endIndex = startIndex + props.perPage;
+  return filteredRows.value.slice(startIndex, endIndex);
+});
 
+// Toplam sayfa sayısı
+const totalPages = computed(() => {
+  return Math.ceil(filteredRows.value.length / props.perPage);
+});
+
+// Sayfa değişimi
+const changePage = (page: number) => {
+  currentPage.value = page;
+};
+
+// Arama işlemi
 const handleSearch = (key, value) => {
   searchText.value[props.headers.findIndex(header => header.value === key)] = value;
 };
 
+// Sıralama işlemi
 const sortTable = (key) => {
   if (sortKey.value === key) {
     sortOrder.value = -sortOrder.value;
@@ -95,12 +135,18 @@ const sortTable = (key) => {
   }
 };
 
-const getSortIcon = (key) => {
+// Sıralama ikonu
+const getSortIcon = (key: string) => {
   if (sortKey.value === key) {
     return sortOrder.value === 1 ? props.sortAscIcon : props.sortDescIcon;
   }
   return props.sortDefaultIcon;
 };
+
+// Sayfa numarası değiştikçe, filtrelenmiş ve sıralanmış veriler tekrar hesaplanır
+watch([sortedRows, filteredRows], () => {
+  currentPage.value = 1;
+});
 </script>
 
 <style scoped>
@@ -168,6 +214,7 @@ tbody tr:hover {
   content: '⇅';
   font-size: 0.2em;
 }
+
 .search-input {
   margin-top: 10px;
 }
