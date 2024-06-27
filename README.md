@@ -7,6 +7,7 @@ This component allows you to create a dynamically sortable table using Vue.js. T
 - **Dynamic Sorting**: Click on the table headers to sort the rows in ascending or descending order.
 - **Custom Icons**: You can customize the sorting icons.
 - **Action Area**: Optionally, add an action area to the far right of each row where you can insert custom content using a template slot.
+- **Search Area**: Optionally, add search area to each column.
 
 ## Installation
 
@@ -115,3 +116,5 @@ CSS class for the default sort icon.
 ### action (Boolean, Optional)
 If true, adds an action area to the far right of each row. Default is false.
 
+### columnSearch (Boolean, Optional)
+If true, there is a search field under each column.
