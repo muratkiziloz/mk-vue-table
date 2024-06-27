@@ -11,6 +11,7 @@
         <th v-if="action">Actions</th>
       </tr>
       </thead>
+
       <tbody>
       <tr v-for="(row, rowIndex) in filteredRows" :key="rowIndex">
         <td v-for="(header, colIndex) in headers" :key="colIndex">{{ row[header.value] }}</td>
