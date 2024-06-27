@@ -1,4 +1,4 @@
-# MyTableComponent
+# MkVueTable
 
 This component allows you to create a dynamically sortable table using Vue.js. The table headers, rows, and optionally action areas can be defined dynamically.
 
