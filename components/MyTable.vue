@@ -24,7 +24,11 @@
 
       <tbody>
       <tr v-for="(row, rowIndex) in paginatedRows" :key="rowIndex" :style="getRowStyle(row)">
-        <td v-for="(header, colIndex) in headers" :key="colIndex">{{ row[header.value] }} </td>
+        <td v-for="(header, colIndex) in headers" :key="colIndex">
+          <slot :name="`column-${header.value}`" :row="row" :value="row[header.value]">
+            {{ row[header.value] }}
+          </slot>
+        </td>
         <td v-if="action">
           <slot name="action" :row="row"></slot>
         </td>

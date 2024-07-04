@@ -10,6 +10,8 @@ This component allows you to create a dynamically sortable table using Vue.js. T
 - **Search Area**: Optionally, add search area to each column.
 - **Pagination**: Easily paginate your data to control the number of rows displayed per page.
 - **Conditional Row Coloring**: Change the background color of rows based on specific conditions.
+- **Custom Column Slots**: Add custom content to specific columns using template slots.
+
 
 ## Installation
 
@@ -36,6 +38,11 @@ Include the component in your project and use it as shown in the example below:
     <template #action="{ row }">
       <button @click="handleAction(row)">Action</button>
     </template>
+    
+    <template #column-age="{ row, value }">
+      <span :style="{ fontWeight: value > 30 ? 'bold' : 'normal' }">{{ value }}</span>
+    </template>
+    
   </MyTableComponent>
 </template>
 
@@ -149,6 +156,17 @@ You can define custom content for the action area of each row using a template s
   <button @click="handleAction(row)">Action</button>
 </template>
 ```
+### column-[header.value]
+You can define custom content for a specific column using a slot named column-[header.value], where [header.value] is the value of the header.
+### Example:
+```vue
+<template #column-age="{ row, value }">
+  <span :style="{ fontWeight: value > 30 ? 'bold' : 'normal' }">{{ value }}</span>
+</template>
+
+```
+##### Usage Notes:
+- Custom Column Slots: To add custom content to a specific column, use a slot named column-[header.value], replacing [header.value] with the value of the column header. This allows you to insert custom elements or apply custom styling based on the data in that column.
 ## Methods
 ### handleAction
 A method to handle actions for a specific row. You can define this method in your component and pass it to the table component.
