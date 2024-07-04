@@ -8,6 +8,7 @@
       :action="true"
       :columnSearch="true"
       :perPage="5"
+      :coloredRows="coloredRows"
   >
     <template #action="{ row }">
       <button @click="handleAction(row)">Action</button>
@@ -50,6 +51,19 @@ const rows = ref([
   { name: 'Jane Smith', age: 25, age2: 'tesf', age4: 'test2'  },
   { name: 'Jane Smith', age: 25, age2: 'tesf', age4: 'test2'  },
 ]);
+
+const coloredRows = ref([
+  {
+    key: 'age',
+    value: 30,
+    color: 'green',
+  },
+  {
+    key: 'age',
+    value: 25,
+    color: 'red',
+  },
+])
 
 const handleAction = (row) => {
   alert(`Action clicked for ${row.name}`);

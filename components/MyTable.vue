@@ -1,20 +1,24 @@
 <template>
-  <div>
+  <div class="table-card">
     <table>
       <thead :class="headerClass" :style="headerStyle">
       <tr>
-        <th v-for="(header, index) in headers" :key="index" @click="sortTable(header.value)">
-          {{ header.text }}
+        <th v-for="(header, index) in headers" :key="index">
+          <div class="sort-and-head-area" @click="sortTable(header.value)">
+            {{ header.text }}
+            <span :class="getSortIcon(header.value)"></span>
+          </div>
+
           <input v-if="columnSearch" class="search-input" type="text" v-model="searchText[index]" placeholder="ara" @input="handleSearch(header.value, $event.target.value)">
-          <span :class="getSortIcon(header.value)"></span>
+
         </th>
         <th v-if="action">Actions</th>
       </tr>
       </thead>
 
       <tbody>
-      <tr v-for="(row, rowIndex) in paginatedRows" :key="rowIndex">
-        <td v-for="(header, colIndex) in headers" :key="colIndex">{{ row[header.value] }}</td>
+      <tr v-for="(row, rowIndex) in paginatedRows" :key="rowIndex" :style="getRowStyle(row)">
+        <td v-for="(header, colIndex) in headers" :key="colIndex">{{ row[header.value] }} </td>
         <td v-if="action">
           <slot name="action" :row="row"></slot>
         </td>
@@ -30,6 +34,10 @@ import { ref, computed, watch } from 'vue';
 import Pagination from './Pagination.vue';
 
 const props = defineProps({
+  tableTitle: {
+    type: String,
+    required: true
+  },
   headers: {
     type: Array,
     required: true
@@ -37,6 +45,10 @@ const props = defineProps({
   rows: {
     type: Array,
     required: true
+  },
+  coloredRows: {
+    type: Array,
+    required: false
   },
   headerClass: {
     type: String,
@@ -126,7 +138,7 @@ const handleSearch = (key, value) => {
 };
 
 // Sıralama işlemi
-const sortTable = (key) => {
+const sortTable = (key: string) => {
   if (sortKey.value === key) {
     sortOrder.value = -sortOrder.value;
   } else {
@@ -143,6 +155,15 @@ const getSortIcon = (key: string) => {
   return props.sortDefaultIcon;
 };
 
+// Satır rengi
+const getRowStyle = (row) => {
+  console.log('test',props.coloredRows)
+  if (!props.coloredRows) return '';
+
+  const matchedColorRule = props.coloredRows.find(colorRule => row[colorRule.key] == colorRule.value);
+  return matchedColorRule ? { backgroundColor: matchedColorRule.color } : '';
+};
+
 // Sayfa numarası değiştikçe, filtrelenmiş ve sıralanmış veriler tekrar hesaplanır
 watch([sortedRows, filteredRows], () => {
   currentPage.value = 1;
@@ -150,6 +171,12 @@ watch([sortedRows, filteredRows], () => {
 </script>
 
 <style scoped>
+.table-card {
+  background-color: #fff;
+  padding: 10px 10px 70px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
 table {
   width: 100%;
   border-collapse: collapse;
@@ -197,19 +224,22 @@ tbody tr:hover {
 .icon {
   display: inline-block;
   margin-left: 8px;
-  font-size: 0.2em;
+  font-size: 0.4em;
 }
 
 .sort-asc::after {
   content: '▲';
-  font-size: 0.2em;
+  font-size: 0.4em;
 }
 
 .sort-desc::after {
   content: '▼';
-  font-size: 0.2em;
+  font-size: 0.4em;
 }
-
+.sort-default::after {
+  content: '⇅';
+  font-size: 0.4em;
+}
 .icon::after {
   content: '⇅';
   font-size: 0.2em;

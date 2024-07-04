@@ -49,7 +49,7 @@ const gotoPage = (page: number) => {
 <style scoped>
 .pagination {
   margin-top: 20px;
-  text-align: center;
+  float: right;
 }
 button {
   margin: 0 5px;

@@ -1,6 +1,6 @@
 {
   "name": "my-awesome-table-component",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "description": "A simple Nuxt 3 table component",
   "main": "./dist/my-awesome-table-component.umd.js",
   "module": "./dist/my-awesome-table-component.es.js",
