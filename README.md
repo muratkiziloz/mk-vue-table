@@ -34,6 +34,8 @@ Include the component in your project and use it as shown in the example below:
     :action="true"
     :columnSearch="true"
     :perPage="5"
+    :coloredRows="coloredRows"
+    :defaultCss="true"
   >
     <template #action="{ row }">
       <button @click="handleAction(row)">Action</button>
