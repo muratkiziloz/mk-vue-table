@@ -8,6 +8,8 @@ This component allows you to create a dynamically sortable table using Vue.js. T
 - **Custom Icons**: You can customize the sorting icons.
 - **Action Area**: Optionally, add an action area to the far right of each row where you can insert custom content using a template slot.
 - **Search Area**: Optionally, add search area to each column.
+- **Pagination**: Easily paginate your data to control the number of rows displayed per page.
+- **Conditional Row Coloring**: Change the background color of rows based on specific conditions.
 
 ## Installation
 
@@ -123,3 +125,33 @@ If true, there is a search field under each column.
 
 ### perPage (Number, Required)
 Number of records to show on one page
+
+### coloredRows (Array, Optional)
+Defines conditions to color the rows based on specific key-value pairs. Each condition is an object with a key, value, and color property.
+#### Example:
+```js
+const coloredRows = [
+    { key: 'age', value: '30', color: 'lightblue' },
+    { key: 'country', value: 'Canada', color: 'lightgreen' }
+];
+```
+
+## Slots
+### action
+You can define custom content for the action area of each row using a template slot named action.
+
+### Example: 
+```vue
+<template #action="{ row }">
+  <button @click="handleAction(row)">Action</button>
+</template>
+```
+## Methods
+### handleAction
+A method to handle actions for a specific row. You can define this method in your component and pass it to the table component.
+#### Example:
+```js
+const handleAction = (row) => {
+    alert(`Action clicked for ${row.name}`);
+};
+```
