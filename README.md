@@ -136,6 +136,9 @@ const coloredRows = [
 ];
 ```
 
+### defaultCss (Boolean, Optional)
+If true, css works. If not the table works without css.
+
 ## Slots
 ### action
 You can define custom content for the action area of each row using a template slot named action.

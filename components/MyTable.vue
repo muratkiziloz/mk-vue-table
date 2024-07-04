@@ -1,15 +1,21 @@
 <template>
-  <div class="table-card">
-    <table>
+  <div :class="defaultCss ? 'table-card pb-20 pt-10 pl-10 pr-10' : ''">
+    <div v-if="tableTitle" :class="defaultCss ? 'table-title' : ''">{{tableTitle}}</div>
+    <table :class="defaultCss ? 'table-auto' : ''">
       <thead :class="headerClass" :style="headerStyle">
       <tr>
         <th v-for="(header, index) in headers" :key="index">
-          <div class="sort-and-head-area" @click="sortTable(header.value)">
+          <div :class="defaultCss ? '' : 'sort-and-head-area'" @click="sortTable(header.value)">
             {{ header.text }}
             <span :class="getSortIcon(header.value)"></span>
           </div>
 
-          <input v-if="columnSearch" class="search-input" type="text" v-model="searchText[index]" placeholder="ara" @input="handleSearch(header.value, $event.target.value)">
+          <input v-if="columnSearch"
+                 :class=" defaultCss ? 'mt-2 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500': ''"
+                 type="text"
+                 v-model="searchText[index]"
+                 placeholder="ara"
+                 @input="handleSearch(header.value, $event.target.value)">
 
         </th>
         <th v-if="action">Actions</th>
@@ -36,7 +42,7 @@ import Pagination from './Pagination.vue';
 const props = defineProps({
   tableTitle: {
     type: String,
-    required: true
+    required: false
   },
   headers: {
     type: Array,
@@ -83,6 +89,11 @@ const props = defineProps({
   perPage: {
     type: Number,
     default: 10
+  },
+  defaultCss: {
+    type: Boolean,
+    default: true,
+    required: false,
   }
 });
 
@@ -171,12 +182,6 @@ watch([sortedRows, filteredRows], () => {
 </script>
 
 <style scoped>
-.table-card {
-  background-color: #fff;
-  padding: 10px 10px 70px 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
 table {
   width: 100%;
   border-collapse: collapse;
@@ -245,7 +250,9 @@ tbody tr:hover {
   font-size: 0.2em;
 }
 
-.search-input {
-  margin-top: 10px;
+.table-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 10px;
 }
 </style>

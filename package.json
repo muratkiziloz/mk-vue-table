@@ -1,6 +1,6 @@
 {
-  "name": "my-awesome-table-component",
-  "version": "1.0.19",
+  "name": "mk-vue3-table",
+  "version": "1.0.22",
   "description": "A simple Nuxt 3 table component",
   "main": "./dist/my-awesome-table-component.umd.js",
   "module": "./dist/my-awesome-table-component.es.js",
@@ -23,5 +23,10 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "devDependencies": {
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.39",
+    "tailwindcss": "^3.4.4"
+  }
 }

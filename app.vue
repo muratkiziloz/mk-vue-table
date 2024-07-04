@@ -1,5 +1,6 @@
 <template>
   <MyTable
+      tableTitle="Example Table"
       :headers="headers"
       :rows="rows"
       :sortAscIcon="'sort-asc'"
@@ -9,6 +10,7 @@
       :columnSearch="true"
       :perPage="5"
       :coloredRows="coloredRows"
+      :defaultCss="true"
   >
     <template #action="{ row }">
       <button @click="handleAction(row)">Action</button>
