@@ -1,40 +1,43 @@
 <template>
   <div :class="defaultCss ? 'table-card pb-20 pt-10 pl-10 pr-10' : ''">
-    <div v-if="tableTitle" :class="defaultCss ? 'table-title' : ''">{{tableTitle}}</div>
-    <table :class="defaultCss ? 'table-auto' : ''">
-      <thead :class="headerClass" :style="headerStyle">
-      <tr>
-        <th v-for="(header, index) in headers" :key="index">
-          <div :class="defaultCss ? '' : 'sort-and-head-area'" @click="sortTable(header.value)">
-            {{ header.text }}
-            <span :class="getSortIcon(header.value)"></span>
-          </div>
+    <div v-if="tableTitle" :class="defaultCss ? 'table-title text-2xl font-bold mb-6 text-gray-700' : ''">{{tableTitle}}</div>
+    <div class="overflow-x-auto bg-white shadow-md rounded-lg">
+      <table :class="defaultCss ? 'table-auto min-w-full divide-y divide-gray-200' : ''">
+        <thead class="bg-gray-50" :class="headerClass" :style="headerStyle">
+        <tr>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" v-for="(header, index) in headers" :key="index">
+            <div :class="defaultCss ? '' : 'sort-and-head-area'" @click="sortTable(header.value)">
+              {{ header.text }}
+              <span :class="getSortIcon(header.value)"></span>
+            </div>
 
-          <input v-if="columnSearch"
-                 :class=" defaultCss ? 'mt-2 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500': ''"
-                 type="text"
-                 v-model="searchText[index]"
-                 placeholder="ara"
-                 @input="handleSearch(header.value, $event.target.value)">
+            <input v-if="columnSearch"
+                   :class=" defaultCss ? 'mt-2 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500': ''"
+                   type="text"
+                   v-model="searchText[index]"
+                   placeholder="ara"
+                   @input="handleSearch(header.value, $event.target.value)">
 
-        </th>
-        <th v-if="action">Actions</th>
-      </tr>
-      </thead>
+          </th>
+          <th v-if="action">Actions</th>
+        </tr>
+        </thead>
 
-      <tbody>
-      <tr v-for="(row, rowIndex) in paginatedRows" :key="rowIndex" :style="getRowStyle(row)">
-        <td v-for="(header, colIndex) in headers" :key="colIndex">
-          <slot :name="`column-${header.value}`" :row="row" :value="row[header.value]">
-            {{ row[header.value] }}
-          </slot>
-        </td>
-        <td v-if="action">
-          <slot name="action" :row="row"></slot>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+        <tbody class="bg-white divide-y divide-gray-200">
+        <tr class="hover:bg-gray-100 transition duration-150 ease-in-out" v-for="(row, rowIndex) in paginatedRows" :key="rowIndex" :style="getRowStyle(row)">
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" v-for="(header, colIndex) in headers" :key="colIndex">
+            <slot :name="`column-${header.value}`" :row="row" :value="row[header.value]">
+              {{ row[header.value] }}
+            </slot>
+          </td>
+          <td v-if="action">
+            <slot name="action" :row="row"></slot>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
     <Pagination :currentPage="currentPage" :totalPages="totalPages" :onPageChange="changePage" />
   </div>
 </template>
@@ -124,7 +127,7 @@ const sortedRows = computed(() => {
 const filteredRows = computed(() => {
   return sortedRows.value.filter(row => {
     return props.headers.every((header, index) => {
-      const searchValue = searchText.value[index].toLowerCase();
+      const searchValue = searchText.value[index].toLowerCase(); // Tolocalelowercase
       return String(row[header.value]).toLowerCase().includes(searchValue);
     });
   });

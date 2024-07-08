@@ -1,11 +1,11 @@
 <!-- Pagination.vue -->
 <template>
-  <div class="pagination">
-    <button @click="gotoPage(1)" :disabled="currentPage === 1">First</button>
-    <button @click="prevPage" :disabled="currentPage === 1">Prev</button>
-    <span>{{ currentPage }} / {{ totalPages }}</span>
-    <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>
-    <button @click="gotoPage(totalPages)" :disabled="currentPage === totalPages">Last</button>
+  <div class="pagination flex justify-center items-center space-x-2">
+    <button @click="gotoPage(1)" :disabled="currentPage === 1" class="px-4 py-2 bg-gray-200 text-gray-700 rounded disabled:opacity-50 disabled:cursor-not-allowed">First</button>
+    <button @click="prevPage" :disabled="currentPage === 1" class="px-4 py-2 bg-gray-200 text-gray-700 rounded disabled:opacity-50 disabled:cursor-not-allowed">Prev</button>
+    <span class="px-4 py-2 text-gray-700">{{ currentPage }} / {{ totalPages }}</span>
+    <button @click="nextPage" :disabled="currentPage === totalPages" class="px-4 py-2 bg-gray-200 text-gray-700 rounded disabled:opacity-50 disabled:cursor-not-allowed">Next</button>
+    <button @click="gotoPage(totalPages)" :disabled="currentPage === totalPages" class="px-4 py-2 bg-gray-200 text-gray-700 rounded disabled:opacity-50 disabled:cursor-not-allowed">Last</button>
   </div>
 </template>
 
