@@ -109,6 +109,11 @@ const props = defineProps({
     type: Boolean,
     default: true,
     required: false,
+  },
+  perPage: {
+    required: true,
+    default: 5,
+    type: Number
   }
 });
 
@@ -116,7 +121,7 @@ const currentPage = ref(1);
 const sortKey = ref('');
 const sortOrder = ref(1);
 const searchText = ref(Array(props.headers.length).fill(''));
-const perPage = ref(props.perPage || 10);
+const perPage = ref(props.perPage);
 
 // Sıralama işlemi
 const sortedRows = computed(() => {

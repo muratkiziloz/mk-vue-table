@@ -8,7 +8,7 @@
       :sortDefaultIcon="'sort-default'"
       :action="true"
       :columnSearch="true"
-      :perPage="5"
+      :perPage="10"
   >
     <template #action="{ row }">
       <button  class=" whitespace-nowrap text-sm text-gray-500" @click="handleAction(row)">Action</button>
