@@ -11,7 +11,7 @@
       :perPage="5"
   >
     <template #action="{ row }">
-      <button @click="handleAction(row)">Action</button>
+      <button  class=" whitespace-nowrap text-sm text-gray-500" @click="handleAction(row)">Action</button>
     </template>
 <!--    <template #column-age="{ row, value }">-->
 <!--      <span :style="{ fontWeight: value > 26 ? 'bold' : 'normal' }">{{ value }}</span>-->

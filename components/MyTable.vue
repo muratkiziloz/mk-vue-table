@@ -38,9 +38,21 @@
       </table>
     </div>
 
-    <Pagination :currentPage="currentPage" :totalPages="totalPages" :onPageChange="changePage" />
+    <div class="flex justify-between items-center">
+      <div class="info mr-auto py-4 whitespace-nowrap text-sm text-gray-500">Showing {{ paginatedRows.length }} records out of a total of {{ filteredRows.length }} records.</div>
+      <div class="flex items-center">
+        <Pagination :currentPage="currentPage" :totalPages="totalPages" :onPageChange="changePage" />
+        <select v-model="perPage" @change="changePerPage" class="mt-4 ml-4 p-2 border rounded">
+          <option :value="5">5</option>
+          <option :value="10">10</option>
+          <option :value="20">20</option>
+          <option :value="50">50</option>
+        </select>
+      </div>
+    </div>
   </div>
 </template>
+
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
@@ -93,10 +105,6 @@ const props = defineProps({
     required: false,
     default: true
   },
-  perPage: {
-    type: Number,
-    default: 10
-  },
   defaultCss: {
     type: Boolean,
     default: true,
@@ -108,6 +116,7 @@ const currentPage = ref(1);
 const sortKey = ref('');
 const sortOrder = ref(1);
 const searchText = ref(Array(props.headers.length).fill(''));
+const perPage = ref(props.perPage || 10);
 
 // Sıralama işlemi
 const sortedRows = computed(() => {
@@ -135,14 +144,14 @@ const filteredRows = computed(() => {
 
 // Sayfalama işlemi
 const paginatedRows = computed(() => {
-  const startIndex = (currentPage.value - 1) * props.perPage;
-  const endIndex = startIndex + props.perPage;
+  const startIndex = (currentPage.value - 1) * perPage.value;
+  const endIndex = startIndex + perPage.value;
   return filteredRows.value.slice(startIndex, endIndex);
 });
 
 // Toplam sayfa sayısı
 const totalPages = computed(() => {
-  return Math.ceil(filteredRows.value.length / props.perPage);
+  return Math.ceil(filteredRows.value.length / perPage.value);
 });
 
 // Sayfa değişimi
@@ -175,7 +184,6 @@ const getSortIcon = (key: string) => {
 
 // Satır rengi
 const getRowStyle = (row) => {
-  console.log('test',props.coloredRows)
   if (!props.coloredRows) return '';
 
   const matchedColorRule = props.coloredRows.find(colorRule => row[colorRule.key] == colorRule.value);
@@ -183,10 +191,16 @@ const getRowStyle = (row) => {
 };
 
 // Sayfa numarası değiştikçe, filtrelenmiş ve sıralanmış veriler tekrar hesaplanır
-watch([sortedRows, filteredRows], () => {
+watch([sortedRows, filteredRows, perPage], () => {
   currentPage.value = 1;
 });
+
+// Sayfa başına gösterilecek öğe sayısını değiştirme
+const changePerPage = () => {
+  currentPage.value = 1;
+};
 </script>
+
 
 <style scoped>
 table {
