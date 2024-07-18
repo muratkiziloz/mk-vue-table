@@ -8,10 +8,15 @@
       :sortDefaultIcon="'sort-default'"
       :action="true"
       :columnSearch="true"
-      :perPage="10"
+      :perPage="5"
   >
     <template #action="{ row }">
       <button  class=" whitespace-nowrap text-sm text-gray-500" @click="handleAction(row)">Action</button>
+    </template>
+    <template #undefined-result="{row}">
+      <div class="center test  absolute">
+        There were no results.
+      </div>
     </template>
 <!--    <template #column-age="{ row, value }">-->
 <!--      <span :style="{ fontWeight: value > 26 ? 'bold' : 'normal' }">{{ value }}</span>-->
@@ -25,37 +30,25 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
+
 const headers = ref([
   { text: 'Name', value: 'name', searchValue: 'name', operator: 'equals' },
   { text: 'Age', value: 'age', searchValue: 'age', operator: 'equals' },
-  { text: 'Agesdas', value: 'age2', searchValue: 'age', operator: 'equals' },
-  { text: 'Age35rf', value: 'status', searchValue: 'age', operator: 'equals' },
+  { text: 'Occupation', value: 'occupation', searchValue: 'occupation', operator: 'equals' },
+  { text: 'Status', value: 'status', searchValue: 'status', operator: 'equals' },
 ]);
 
 const rows = ref([
-  { name: 'John Doe', age: 30, age2: 'tesf', status: '1' },
-  { name: 'Jane Smith', age: 25, age2: 'tesf', status: '1'  },
-  { name: 'Jane Smith', age: 26, age2: 'tesf', status: '0'  },
-  { name: 'Jane Smith', age: 26, age2: 'tesf', status: '1'  },
-  { name: 'Jane Smith', age: 27, age2: 'tesf', status: '1'  },
-  { name: 'Jane Smith', age: 24, age2: 'tesf', status: '0'  },
-  { name: 'Jane Smith', age: 25, age2: 'tesf', status: '0'  },
-  { name: 'Hasan Smith', age: 25, age2: 'tesf', status: '0'  },
-  { name: 'Jane Smith', age: 25, age2: 'tesf', status: '0'  },
-  { name: 'Jane Smith', age: 25, age2: 'tesf', status: '0'  },
-  { name: 'Jane Smith', age: 25, age2: 'tesf', status: '1'  },
-  { name: 'Jane Smith', age: 25, age2: 'tesf', status: '1'  },
-  { name: 'Jane Smith', age: 25, age2: 'tesf', status: '1'  },
-  { name: 'Jane Smith', age: 25, age2: 'tesf', status: '1'  },
-  { name: 'Jane Smith', age: 25, age2: 'tesf', status: '1'  },
-  { name: 'Jane Smith', age: 25, age2: 'tesf', status: '0'  },
-  { name: 'Jane Smith', age: 25, age2: 'tesf', status: '1'  },
-  { name: 'Jane Smith', age: 25, age2: 'tesf', status: '0'  },
-  { name: 'Jane Smith', age: 25, age2: 'tesf', status: '1'  },
-  { name: 'Jane Smith', age: 25, age2: 'tesf', status: '1'  },
-  { name: 'Jane Smith', age: 25, age2: 'tesf', status: '1'  },
-  { name: 'Jane Smith', age: 25, age2: 'tesf', status: '1'  },
-  { name: 'Jane Smith', age: 25, age2: 'tesf', status: '1'  },
+  { name: 'John Doe', age: 30, occupation: 'Engineer', status: '1' },
+  { name: 'Jane Smith', age: 25, occupation: 'Designer', status: '1' },
+  { name: 'Sam Green', age: 35, occupation: 'Developer', status: '0' },
+  { name: 'Anna Blue', age: 26, occupation: 'Manager', status: '1' },
+  { name: 'Mike Brown', age: 28, occupation: 'Developer', status: '0' },
+  { name: 'Sarah White', age: 24, occupation: 'Designer', status: '1' },
+  { name: 'David Black', age: 32, occupation: 'Engineer', status: '0' },
+  { name: 'Emily Gray', age: 27, occupation: 'Manager', status: '1' },
+  { name: 'Chris Red', age: 29, occupation: 'Developer', status: '1' },
+  { name: 'Katie Pink', age: 23, occupation: 'Designer', status: '0' },
 ]);
 
 const coloredRows = ref([
@@ -77,4 +70,9 @@ const handleAction = (row) => {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.test {
+  padding: 100px;
+  text-align: center;
+}
+</style>

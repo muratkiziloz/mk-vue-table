@@ -24,6 +24,11 @@
         </thead>
 
         <tbody class="bg-white divide-y divide-gray-200">
+        <tr v-if="paginatedRows.length === 0">
+          <td :colspan="headers.length + (action ? 1 : 0)">
+            <slot name="undefined-result"></slot>
+          </td>
+        </tr>
         <tr class="hover:bg-gray-100 transition duration-150 ease-in-out" v-for="(row, rowIndex) in paginatedRows" :key="rowIndex" :style="getRowStyle(row)">
           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" v-for="(header, colIndex) in headers" :key="colIndex">
             <slot :name="`column-${header.value}`" :row="row" :value="row[header.value]">
